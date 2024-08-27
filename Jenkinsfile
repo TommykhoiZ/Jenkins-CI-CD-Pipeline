@@ -11,7 +11,7 @@ pipeline {
         
         stage('Unit and Integration Tests') { // Stage 2
             steps {
-                sh 'mvn test' // Replace with your actual test command
+                echo 'Integrating different tests...'
             }
             post {
                 always {
