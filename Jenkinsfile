@@ -9,10 +9,19 @@ pipeline {
             }
         }
         
-        stage('Unit and Integration Tests') {
+        stage('Unit and Integration Tests') { // Stage 2
             steps {
-                echo 'Running unit and integration tests...'
-                // Example: sh 'mvn test'
+                sh 'mvn test' // Replace with your actual test command
+            }
+            post {
+                always {
+                    emailext (
+                        to: 'hoangminhkhoi3108@gmail.com',
+                        subject: "Unit and Integration Tests Stage: ${currentBuild.fullDisplayName} - ${currentBuild.result}",
+                        body: """<p>The Unit and Integration Tests stage has completed.</p><p>Status: ${currentBuild.result}</p>""",
+                        attachLog: true
+                    )
+                }
             }
         }
         
@@ -23,10 +32,19 @@ pipeline {
             }
         }
         
-        stage('Security Scan') {
+        stage('Security Scan') { // Stage 4
             steps {
-                echo 'Running security scans...'
-                // Example: sh 'dependency-check.sh --project my-app'
+                echo 'Running security scans...' 
+            }
+            post {
+                always {
+                    emailext (
+                        to: 'hoangminhkhoi3108@gmail.com',
+                        subject: "Security Scan Stage: ${currentBuild.fullDisplayName} - ${currentBuild.result}",
+                        body: """<p>The Security Scan stage has completed.</p><p>Status: ${currentBuild.result}</p>""",
+                        attachLog: true
+                    )
+                }
             }
         }
         
