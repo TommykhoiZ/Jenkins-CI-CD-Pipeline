@@ -14,16 +14,22 @@ pipeline {
                 echo 'Integrating different tests...'
             }
             post {
-                always {
-                    emailext (
-                        to: 'hoangminhkhoi3108@gmail.com',
-                        subject: "Unit and Integration Tests Stage: ${currentBuild.fullDisplayName} - ${currentBuild.result}",
-                        body: """<p>The Unit and Integration Tests stage has completed.</p><p>Status: ${currentBuild.result}</p>""",
-                        attachLog: true
-                    )
-                }
-            }
+        success {
+            emailext(
+                to: 'hoangminhkhoi3108@gmail.com',
+                subject: "Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "The build was successful. Check the details at ${env.BUILD_URL}"
+            )
         }
+        failure {
+            emailext(
+                to: 'hoangminhkhoi3108@gmail.com',
+                subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "The build failed. Check the logs at ${env.BUILD_URL}"
+            )
+        }
+    }
+}
         
         stage('Code Analysis') {
             steps {
